@@ -29,7 +29,8 @@
       button.setAttribute("aria-expanded", String(open));
       button.setAttribute("aria-label", (open ? "收起 " : "展开 ") + label);
     }
-    setExpanded(false);
+    // Expand month groups by default; keep individual reports collapsed.
+    setExpanded(li.parentElement?.parentElement === toc);
     button.addEventListener("click", () => setExpanded(nested.hidden));
     entries.push({li, setExpanded});
   }

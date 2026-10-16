@@ -1,0 +1,10 @@
+[book]
+title = "RL Data Synthesis"
+description = "RL 数据合成、Harness 优化与论文研究"
+language = "zh"
+src = "src"
+
+[output.html]
+mathjax-support = true
+fold.enable = true
+fold.level = 1

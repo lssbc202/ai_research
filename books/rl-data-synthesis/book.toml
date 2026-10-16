@@ -1,6 +1,6 @@
 [book]
-title = "RL 数据合成与 Harness 优化：论文调研与分析"
-description = "围绕 RL 数据合成、Harness 优化与相关方法的持续论文调研和比较分析"
+title = "Agent harness与后训练"
+description = "Agent Harness 与大模型后训练相关论文调研和分析日报"
 language = "zh"
 src = "src"
 

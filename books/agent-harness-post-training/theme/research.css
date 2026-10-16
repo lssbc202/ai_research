@@ -1,22 +1,28 @@
-/* Polish mdBook without changing its navigation or theme behaviour. */
-:root{--reading-font:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
-.content main{max-width:910px;margin-inline:auto}
-.content main>h1:first-child{margin-top:1.1em}
-.content main p,.content main li{line-height:1.93;font-size:1.02em}
-.content main p{margin-block:1em 1.25em}
-.content main h1,.content main h2,.content main h3,.content main h4{font-family:var(--reading-font);line-height:1.44;letter-spacing:-.015em}
-.content main h1{font-size:2em;margin:1.8em 0 .8em;padding-bottom:.45em;border-bottom:1px solid var(--table-border-color)}
-.content main h2{font-size:1.56em;margin:1.95em 0 .7em}
-.content main h3{font-size:1.28em;margin:1.7em 0 .6em}
-.content main h4{font-size:1.12em;margin:1.45em 0 .5em}
+/* Sage paper theme inspired by the user's research daily HTML. */
+:root{--research-green:#206547;--research-line:#d9e3db;--research-paper:#fffefa;--research-wash:#f0f4ee}
+html.light,html.rust{--bg:var(--research-wash);--fg:#20312b;--sidebar-bg:#f0f4ee;--sidebar-fg:#344e3f;--sidebar-active:#206547;--links:#206547;--inline-code-color:#275d43;--table-border-color:#d9e3db;--table-header-bg:#edf3e7;--table-alternate-bg:#f7f9f5}
+html.light .content,html.rust .content{background:var(--research-wash)}
+html.light .content main,html.rust .content main{
+  max-width:880px;margin:26px auto 50px;padding:38px 44px 65px;
+  background:var(--research-paper);border:1px solid var(--research-line);
+  border-radius:12px;box-shadow:0 8px 35px #263f2710;
+  box-sizing:border-box;
+}
+.content main{line-height:1.9;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
+.content main p{line-height:1.9;margin:9px 0 17px}
+.content main li{line-height:1.85;margin:7px 0}
+.content main h1{font-size:29px;line-height:1.45;margin:0 0 20px}
+.content main h2{font-size:25px;line-height:1.5;margin:46px 0 20px;padding-bottom:12px;border-bottom:2px solid #83a48b}
+.content main h3{font-size:20px;line-height:1.6;margin:34px 0 15px;padding-top:23px;border-top:1px solid var(--table-border-color)}
+.content main h4{font-size:17px;margin:26px 0 12px}
 .content main a{text-underline-offset:3px}
-.content main blockquote{border-left:3px solid #779bb4;padding:.8em 1.2em;margin:1.8em 0;border-radius:0 5px 5px 0}
-.content main pre{border-radius:8px;padding:1.1em 1.35em;line-height:1.6}
-.content main table{font-size:.94em;display:block;overflow-x:auto;border-collapse:collapse;margin:1.6em 0}
-.content main th,.content main td{padding:.62em .85em}
-.content main img{max-width:100%;height:auto;border-radius:5px}
-.content main .math{overflow-x:auto}
-.sidebar{font-family:var(--reading-font)}
-.sidebar .chapter li a{line-height:1.55;padding-top:.28em;padding-bottom:.28em}
-.sidebar .chapter li a.active{font-weight:680}
-@media(max-width:760px){.content main{padding-inline:10px}.content main h1{font-size:1.8em}}
+.content main blockquote{border-left:3px solid #91ae98;background:rgba(145,174,152,.11);padding:12px 16px;margin:19px 0}
+.content main pre{border-radius:7px;padding:15px 18px;line-height:1.65}
+.content main :not(pre)>code{border-radius:3px}
+.content main table{font-size:14px;display:block;overflow-x:auto;border-collapse:collapse;margin:22px 0}
+.content main th,.content main td{padding:11px 12px}
+.content main img{max-width:100%;height:auto;border-radius:4px}
+.sidebar{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif}
+.sidebar .chapter li a{line-height:1.65}
+.sidebar .chapter li a.active{font-weight:700}
+@media(max-width:650px){html.light .content main,html.rust .content main{padding:26px 21px;border-radius:0;border-left:0;border-right:0;margin:0 auto}}

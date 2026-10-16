@@ -151,6 +151,13 @@ def run():
             # Pandoc's default navigation is internal; all CSS and images are embedded.
             # Embed the table-of-contents controls inside the offline HTML.
             document = output.read_text(encoding="utf-8")
+            # Keep Pandoc's TOC separate from a paper-like main content card.
+            toc_end = re.search(r'<nav\\b[^>]*\\bid=["\\']TOC["\\'][^>]*>.*?</nav>', document, re.S)
+            if toc_end:
+                end = toc_end.end()
+                document = document[:end] + '<main class="reading-paper">' + document[end:]
+                document = document.replace("</body>", "</main>\\n</body>")
+
             script = (ROOT / "scripts" / "continuous-toc.js").read_text(encoding="utf-8")
             if "</body>" not in document:
                 raise ValueError("Pandoc output is missing closing body tag")

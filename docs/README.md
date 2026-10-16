@@ -1,57 +1,31 @@
-# 多书籍系统使用说明
+# 多书籍构建说明
 
-## 新建一本书
+使用方法与上传规则请优先阅读 [仓库首页 README](../README.md)。
 
-创建：
+## 目录规则
 
-```text
-books/my-topic/
-├── book.toml
-└── src/
-    ├── README.md
-    ├── 01-first-chapter/
-    │   ├── 01-paper-one.md
-    │   └── 02-paper-two.md
-    └── 02-second-chapter/
-        └── 01-notes.md
-```
+每本书放在 `books/<book-id>/` 下，包含 `book.toml` 与 `src/`。书籍 ID 决定网站 URL，`book.toml` 的 `[book].title` 决定显示书名。
 
-`book.toml` 内容：
+`src/` 下的目录自动成为章节，`YYYY-MM` 目录显示为“YYYY年M月”。Markdown 文件按文件名排序，正文第一个一级标题作为文章标题。以点号或下划线开头的文件和目录不会被收录，可用 `.gitkeep` 保留暂时没有日报的月份文件夹。
 
-```toml
-[book]
-title = "My Topic"
-language = "zh"
-description = "My research notes"
-```
+`SUMMARY.md` 在构建时自动生成于临时目录，不提交到 GitHub。**每本书及每个月份都不需要 README.md。** 如果整本书尚未上传日报，构建时会临时生成说明页；空月份不会出现在目录里。
 
-`src/README.md` 是可选首页；各文件夹就是目录中的章节组，按文件夹名称排序。Markdown 的第一个一级标题作为页面标题，文件名是次级排序依据。文件或文件夹以 `_` 或 `.` 开头会被忽略。文件夹可任意嵌套。自动生成的 `SUMMARY.md` 不需要手动维护，亦不要作为内容提交。
+## 自动发布
 
-本系统根据你设定的目录层级来组织章节，但 mdBook 最终仍然使用自动产生的 `SUMMARY.md`。新增 Markdown 后提交到 main 即触发构建。
+`main` 分支的书籍内容或构建脚本有提交时，GitHub Actions 自动运行 `python3 scripts/build.py`，安装并使用 mdBook 和 Pandoc，将各书 HTML 发布到 Pages。
 
-## 输出
+- [全部书籍](https://lssbc202.github.io/ai_research/)
+- [Agent harness与后训练](https://lssbc202.github.io/ai_research/agent-harness-post-training/)
+- [整本单文件 HTML](https://lssbc202.github.io/ai_research/agent-harness-post-training/complete.html)
 
-- 仓库 Pages 首页：`https://lssbc202.github.io/ai_research/`
-- 示例书籍：`https://lssbc202.github.io/ai_research/agent-harness-post-training/`
-- 整本单文件 HTML：`https://lssbc202.github.io/ai_research/agent-harness-post-training/complete.html`
+单文件 HTML 使用 Pandoc 的 `--embed-resources` 和 `--mathml`，可合并各日报离线阅读；在线搜索 JS 不包含在单文件内。
 
-单 HTML 集中所有文章正文，使用内联 CSS、MathML 数学公式以及嵌入图片以支持离线使用；该文件使用 Pandoc 生成，不是 mdBook 自己的输出。大量文件会使单 HTML 较大。当前单文件版提供浏览器内的章节目录、正文与基础样式；mdBook 的搜索功能仅在在线版提供。
+## 可选本地构建
 
-## 本地构建
-
-需安装 Python 3、mdBook、Pandoc：
+安装 Python 3.11+、mdBook、Pandoc 后，在仓库根目录运行：
 
 ```bash
 python3 scripts/build.py
 ```
 
-构建结果位于 `dist/`，可在浏览器打开 `dist/index.html`。构建不会修改源码中的 `SUMMARY.md`。
-
-## 设计约定
-
-- 配置发现：`books/*/book.toml`。
-- 标题与章节归属由目录及 Markdown 标题决定；不根据创建日期排序。
-- 构建时将原始 Markdown 拷贝进临时目录，生成 `SUMMARY.md`，不修改仓库源码。
-- 限定所有资源在书籍的 src 下，相对图片路径可正常内嵌。
-- 不支持把 mdBook 的搜索 JS 整套嵌入单文件，单文件以全文浏览/浏览器查找为主。
-- 用于公开内容，请勿上传未获授权的受版权保护全文或私密数据。
+输出在 `dist/`，构建不修改仓库中的 Markdown。

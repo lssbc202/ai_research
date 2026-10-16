@@ -118,7 +118,7 @@ def run():
             script = (ROOT / "scripts" / "continuous-toc.js").read_text(encoding="utf-8")
             if "</body>" not in document:
                 raise ValueError("Pandoc output is missing closing body tag")
-            document = document.replace("</body>", "<script>\\n" + script + "\\n</script>\\n</body>")
+            document = document.replace("</body>", "<script>\n" + script + "\n</script>\n</body>")
             output.write_text(document, encoding="utf-8")
             links.append((slug, tomllib.loads(config.read_text(encoding="utf-8"))["book"]["title"]))
     links_html = "\n".join(

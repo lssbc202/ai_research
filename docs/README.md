@@ -32,8 +32,8 @@ description = "My research notes"
 ## 输出
 
 - 仓库 Pages 首页：`https://lssbc202.github.io/ai_research/`
-- 示例书籍：`https://lssbc202.github.io/ai_research/rl-data-synthesis/`
-- 整本单文件 HTML：`https://lssbc202.github.io/ai_research/rl-data-synthesis/complete.html`
+- 示例书籍：`https://lssbc202.github.io/ai_research/agent-harness-post-training/`
+- 整本单文件 HTML：`https://lssbc202.github.io/ai_research/agent-harness-post-training/complete.html`
 
 单 HTML 集中所有文章正文，使用内联 CSS、MathML 数学公式以及嵌入图片以支持离线使用；该文件使用 Pandoc 生成，不是 mdBook 自己的输出。大量文件会使单 HTML 较大。当前单文件版提供浏览器内的章节目录、正文与基础样式；mdBook 的搜索功能仅在在线版提供。
 

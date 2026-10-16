@@ -122,6 +122,19 @@ def run():
         '<h1>AI Research Library</h1><p>公开研究书籍</p>'
         f'<ul>{links_html}</ul></html>', encoding="utf-8"
     )
+    # Backward compatible link for the previous book address.
+    redirects = {"rl-data-synthesis": "agent-harness-post-training"}
+    for old, new in redirects.items():
+        if not (DIST / new / "index.html").exists():
+            continue
+        folder = DIST / old
+        folder.mkdir(exist_ok=True)
+        (folder / "index.html").write_text(
+            '<!doctype html><html lang="zh"><meta charset="utf-8">'
+            '<meta http-equiv="refresh" content="0;url=../' + new + '/">'
+            '<link rel="canonical" href="../' + new + '/">'
+            '<title>Moved</title><a href="../' + new + '/">前往新书籍地址</a>',
+            encoding="utf-8")
     (DIST / ".nojekyll").write_text("", encoding="utf-8")
     print(f"Built {len(links)} book(s).")
 

@@ -1,53 +1,86 @@
-/* Shared heading navigator for mdBook 0.5.x. Leaves native chapter folding alone. */
+/* Shared, self-contained page heading navigator for mdBook 0.5.
+   Read headings from the document instead of relying on mdBook's internal sidebar DOM. */
 (() => {
   "use strict";
-  const seen = new WeakSet();
-  function enhance() {
-    const sidebar = document.querySelector("#mdbook-sidebar, .sidebar");
-    if (!sidebar) return;
-    // The built-in heading tree may be injected after DOMContentLoaded.
-    const lists = sidebar.querySelectorAll("li");
-    for (const item of lists) {
-      if (seen.has(item)) continue;
-      const children = Array.from(item.children);
-      const nested = children.find(n => n.tagName === "UL");
-      const link = children.find(n => n.tagName === "A");
-      // Only page headings (fragment links), not book chapter or month entries.
-      if (!nested || !link || !link.getAttribute("href")?.startsWith("#")) continue;
-      seen.add(item);
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "research-heading-toggle";
-      btn.textContent = "▸";
-      btn.setAttribute("aria-label", "展开子标题");
-      btn.setAttribute("aria-expanded", "false");
-      function set(open) {
-        nested.hidden = !open;
-        btn.textContent = open ? "▾" : "▸";
-        btn.setAttribute("aria-expanded", String(open));
-        btn.setAttribute("aria-label", open ? "收起子标题" : "展开子标题");
-      }
-      set(false);
-      btn.addEventListener("click", event => {
-        event.preventDefault();
-        event.stopPropagation();
-        set(nested.hidden);
-      });
-      item.insertBefore(btn, link);
+  const start = () => {
+    const sidebar = document.querySelector("#mdbook-sidebar .sidebar-scrollbox, #mdbook-sidebar-scrollbox, .sidebar-scrollbox");
+    const main = document.querySelector("#content main, .content main, main");
+    if (!sidebar || !main || document.getElementById("research-page-toc")) return;
+    const headingNodes = Array.from(main.querySelectorAll("h2,h3,h4,h5,h6"))
+      .filter(h => h.id && h.textContent.trim());
+    if (!headingNodes.length) return;
+
+    const panel = document.createElement("section");
+    panel.id = "research-page-toc";
+    panel.className = "research-page-toc";
+    const header = document.createElement("div");
+    header.className = "research-page-toc-header";
+    header.textContent = "本篇目录";
+    const collapse = document.createElement("button");
+    collapse.type = "button";
+    collapse.textContent = "全部收起";
+    collapse.setAttribute("aria-label", "收起本篇内部目录");
+    header.append(collapse);
+    panel.append(header);
+    const root = document.createElement("ul");
+    root.className = "research-toc-list";
+    panel.append(root);
+    const stack = [{level:1, ul:root}];
+    const nodes = [];
+
+    for (const heading of headingNodes) {
+      const level = Number(heading.tagName.slice(1));
+      while (stack.length > 1 && stack[stack.length-1].level >= level) stack.pop();
+      let parent = stack[stack.length-1];
+      const item = document.createElement("li");
+      item.className = "research-toc-item";
+      const link = document.createElement("a");
+      link.href = "#" + encodeURIComponent(heading.id);
+      link.textContent = heading.textContent.trim();
+      item.append(link);
+      parent.ul.append(item);
+      const ul = document.createElement("ul");
+      ul.className = "research-toc-list";
+      item.append(ul);
+      const node = {item,ul,link,level,button:null};
+      nodes.push(node);
+      stack.push({level,ul});
     }
-  }
-  function start() {
-    const sidebar = document.querySelector("#mdbook-sidebar, .sidebar");
-    if (!sidebar) return;
-    enhance();
-    let pending = false;
-    const observer = new MutationObserver(() => {
-      if (pending) return;
-      pending = true;
-      requestAnimationFrame(() => { pending = false; enhance(); });
+
+    function setOpen(node, open) {
+      node.ul.hidden = !open;
+      node.button.textContent = open ? "▾" : "▸";
+      node.button.setAttribute("aria-expanded", String(open));
+      node.button.setAttribute("aria-label", (open ? "收起 " : "展开 ") + node.link.textContent);
+    }
+    const branchNodes = [];
+    for (const node of nodes) {
+      if (!node.ul.children.length) {
+        node.ul.remove();
+        continue;
+      }
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "research-toc-toggle";
+      node.button = button;
+      node.item.insertBefore(button, node.link);
+      branchNodes.push(node);
+      setOpen(node, false);
+      button.addEventListener("click", e => {
+        e.preventDefault();
+        e.stopPropagation();
+        setOpen(node, node.ul.hidden);
+      });
+    }
+    // Keep top-level headings visible; deeper sections begin collapsed.
+    collapse.addEventListener("click", () => {
+      const shouldOpen = branchNodes.every(n => n.ul.hidden);
+      branchNodes.forEach(n => setOpen(n, shouldOpen));
+      collapse.textContent = shouldOpen ? "全部收起" : "全部展开";
     });
-    observer.observe(sidebar, {childList: true, subtree: true});
-  }
+    collapse.textContent = "全部展开";
+    sidebar.append(panel);
+  };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start);
   else start();
 })();

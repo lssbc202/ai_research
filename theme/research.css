@@ -31,3 +31,16 @@ html.light .content main,html.rust .content main{
 .sidebar .research-heading-toggle{display:inline-flex;align-items:center;justify-content:center;width:19px;height:23px;margin:0 4px 0 0;border:0;border-radius:4px;color:var(--sidebar-fg);background:transparent;cursor:pointer;vertical-align:middle}
 .sidebar .research-heading-toggle:hover,.sidebar .research-heading-toggle:focus-visible{background:rgba(55,110,73,.14);outline-offset:2px}
 .sidebar li > ul[hidden]{display:none!important}
+
+/* Dedicated folding heading navigation, independent of mdBook's own chapter tree. */
+.research-page-toc{padding:14px 12px 32px;border-top:1px solid #cddccc;margin-top:14px;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC",sans-serif}
+.research-page-toc-header{display:flex;align-items:center;justify-content:space-between;gap:6px;color:var(--sidebar-fg);font-weight:700;font-size:13px;margin-bottom:10px}
+.research-page-toc-header button{border:1px solid #cad9ce;background:transparent;color:var(--sidebar-fg);font-size:11px;padding:3px 7px;border-radius:5px;cursor:pointer}
+.research-toc-list{list-style:none;margin:0;padding-left:12px}
+.research-page-toc > .research-toc-list{padding-left:0}
+.research-toc-item{position:relative;margin:2px 0;padding-left:19px}
+.research-toc-item a{display:block;color:var(--sidebar-fg);text-decoration:none;font-size:12.5px;line-height:1.55;padding:5px 2px;border-radius:4px;overflow-wrap:anywhere}
+.research-toc-item a:hover{color:var(--sidebar-active);text-decoration:underline}
+.research-toc-list[hidden]{display:none!important}
+.research-toc-toggle{position:absolute;top:4px;left:0;width:18px;height:25px;padding:0;background:none;border:0;color:var(--sidebar-fg);cursor:pointer;font-size:14px}
+.research-toc-toggle:focus-visible,.research-page-toc-header button:focus-visible{outline:2px solid var(--sidebar-active);outline-offset:2px}

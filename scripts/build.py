@@ -137,7 +137,7 @@ def run():
                 cfg_text += "\n[output.html]\n"
             # Override only the two asset lists, preserve all other book options.
             cfg_text = re.sub(r"(?m)^\s*additional-(?:css|js)\s*=.*\n", "", cfg_text)
-            cfg_text = cfg_text.replace("[output.html]", '[output.html]\nadditional-css = ["theme/shared-research.css"]\nadditional-js = ["theme/shared-sidebar-fold.js"]', 1)
+            cfg_text = cfg_text.replace("[output.html]", '[output.html]\nadditional-css = ["theme/shared-research.css"]\nadditional-js = ["theme/shared-sidebar-fold.js"]\nsidebar-header-nav = false', 1)
             cfg_path.write_text(cfg_text, encoding="utf-8")
             summary, pages = collect(work / "src")
             if not pages:

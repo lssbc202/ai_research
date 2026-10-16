@@ -70,7 +70,7 @@ def indent_headings(markdown: str) -> str:
             result.append(line)
             continue
         if fence is None:
-            heading = re.match(r"^( {0,3})(#{1,6})([ \\t]+)(.*)$", line)
+            heading = re.match(r"^( {0,3})(#{1,6})([ \t]+)(.*)$", line)
             if heading:
                 prefix, hashes, space, rest = heading.groups()
                 if len(hashes) < 6:
@@ -86,14 +86,14 @@ def combine_markdown(src: Path, pages):
     for i, page in enumerate(pages):
         relative = page.relative_to(src)
         month_folder = relative.parts[0] if len(relative.parts) > 1 else None
-        month = re.fullmatch(r"(\\d{4})-(0[1-9]|1[0-2])", month_folder or "")
+        month = re.fullmatch(r"(\d{4})-(0[1-9]|1[0-2])", month_folder or "")
         if month_folder != previous_month:
             previous_month = month_folder
             if month:
                 month_label = f"{month.group(1)}年{int(month.group(2))}月"
-                parts.append(f"\\n\\n# {month_label}\\n\\n")
+                parts.append(f"\n\n# {month_label}\n\n")
             elif month_folder:
-                parts.append(f"\\n\\n# {month_folder}\\n\\n")
+                parts.append(f"\n\n# {month_folder}\n\n")
         raw = page.read_text(encoding="utf-8-sig")
         def image_replace(match):
             prefix, target, suffix = match.groups()
@@ -103,13 +103,13 @@ def combine_markdown(src: Path, pages):
             if not resolved.is_relative_to(src.resolve()) or not resolved.is_file():
                 raise ValueError(f"Missing/outside image: {page}: {target}")
             return prefix + resolved.as_posix() + suffix
-        raw = re.sub(r'(!\\[[^\\]]*\\]\\()([^\\s)]+)(\\))', image_replace, raw)
+        raw = re.sub(r'(!\[[^\]]*\]\()([^\s)]+)(\))', image_replace, raw)
         if month_folder:
             # The report H1 becomes H2 under the monthly H1.
             raw = indent_headings(raw)
         section_id = f"document-{i}"
-        parts.append(f'\\n\\n<div id="{section_id}"></div>\\n\\n' + raw + "\\n")
-    return "\\n".join(parts)
+        parts.append(f'\n\n<div id="{section_id}"></div>\n\n' + raw + "\n")
+    return "\n".join(parts)
 
 
 def run():

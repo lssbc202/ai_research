@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Discover books, generate mdBook summaries and full-book standalone HTML."""
 import html
+import tomllib
 import re
 import shutil
 import subprocess
@@ -102,10 +103,10 @@ def run():
                 "pandoc", str(combined), "-o", str(output),
                 "--standalone", "--embed-resources", "--toc",
                 "--toc-depth=6", "--mathml",
-                "--metadata", f"title={slug}",
+                "--metadata", f"title={tomllib.loads(config.read_text(encoding='utf-8'))['book']['title']}",
             ], check=True)
             # Pandoc's default navigation is internal; all CSS and images are embedded.
-            links.append((slug, slug.replace("-", " ").title()))
+            links.append((slug, tomllib.loads(config.read_text(encoding="utf-8"))["book"]["title"]))
     links_html = "\n".join(
         f'<li><a href="{html.escape(slug)}/">{html.escape(title)}</a> '
         f'· <a href="{html.escape(slug)}/complete.html">整本 HTML</a></li>'

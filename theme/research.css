@@ -26,3 +26,8 @@ html.light .content main,html.rust .content main{
 .sidebar .chapter li a{line-height:1.65}
 .sidebar .chapter li a.active{font-weight:700}
 @media(max-width:650px){html.light .content main,html.rust .content main{padding:26px 21px;border-radius:0;border-left:0;border-right:0;margin:0 auto}}
+
+/* Shared folding affordances for nested in-page headings. */
+.sidebar .research-heading-toggle{display:inline-flex;align-items:center;justify-content:center;width:19px;height:23px;margin:0 4px 0 0;border:0;border-radius:4px;color:var(--sidebar-fg);background:transparent;cursor:pointer;vertical-align:middle}
+.sidebar .research-heading-toggle:hover,.sidebar .research-heading-toggle:focus-visible{background:rgba(55,110,73,.14);outline-offset:2px}
+.sidebar li > ul[hidden]{display:none!important}

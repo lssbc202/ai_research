@@ -9,6 +9,7 @@ import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+SHARED_THEME = ROOT / "theme"
 BOOKS = ROOT / "books"
 DIST = ROOT / "dist"
 
@@ -125,6 +126,19 @@ def run():
         with tempfile.TemporaryDirectory() as tmp:
             work = Path(tmp) / slug
             shutil.copytree(base, work)
+            # Apply one shared theme to every book (without altering source configs).
+            work_theme = work / "theme"
+            work_theme.mkdir(exist_ok=True)
+            shutil.copy2(SHARED_THEME / "research.css", work_theme / "shared-research.css")
+            shutil.copy2(SHARED_THEME / "sidebar-fold.js", work_theme / "shared-sidebar-fold.js")
+            cfg_path = work / "book.toml"
+            cfg_text = cfg_path.read_text(encoding="utf-8")
+            if "[output.html]" not in cfg_text:
+                cfg_text += "\n[output.html]\n"
+            # Override only the two asset lists, preserve all other book options.
+            cfg_text = re.sub(r"(?m)^\s*additional-(?:css|js)\s*=.*\n", "", cfg_text)
+            cfg_text = cfg_text.replace("[output.html]", '[output.html]\nadditional-css = ["theme/shared-research.css"]\nadditional-js = ["theme/shared-sidebar-fold.js"]', 1)
+            cfg_path.write_text(cfg_text, encoding="utf-8")
             summary, pages = collect(work / "src")
             if not pages:
                 welcome = work / "src" / "index.md"

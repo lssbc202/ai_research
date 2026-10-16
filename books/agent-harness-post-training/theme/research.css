@@ -1,0 +1,22 @@
+/* Polish mdBook without changing its navigation or theme behaviour. */
+:root{--reading-font:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
+.content main{max-width:910px;margin-inline:auto}
+.content main>h1:first-child{margin-top:1.1em}
+.content main p,.content main li{line-height:1.93;font-size:1.02em}
+.content main p{margin-block:1em 1.25em}
+.content main h1,.content main h2,.content main h3,.content main h4{font-family:var(--reading-font);line-height:1.44;letter-spacing:-.015em}
+.content main h1{font-size:2em;margin:1.8em 0 .8em;padding-bottom:.45em;border-bottom:1px solid var(--table-border-color)}
+.content main h2{font-size:1.56em;margin:1.95em 0 .7em}
+.content main h3{font-size:1.28em;margin:1.7em 0 .6em}
+.content main h4{font-size:1.12em;margin:1.45em 0 .5em}
+.content main a{text-underline-offset:3px}
+.content main blockquote{border-left:3px solid #779bb4;padding:.8em 1.2em;margin:1.8em 0;border-radius:0 5px 5px 0}
+.content main pre{border-radius:8px;padding:1.1em 1.35em;line-height:1.6}
+.content main table{font-size:.94em;display:block;overflow-x:auto;border-collapse:collapse;margin:1.6em 0}
+.content main th,.content main td{padding:.62em .85em}
+.content main img{max-width:100%;height:auto;border-radius:5px}
+.content main .math{overflow-x:auto}
+.sidebar{font-family:var(--reading-font)}
+.sidebar .chapter li a{line-height:1.55;padding-top:.28em;padding-bottom:.28em}
+.sidebar .chapter li a.active{font-weight:680}
+@media(max-width:760px){.content main{padding-inline:10px}.content main h1{font-size:1.8em}}

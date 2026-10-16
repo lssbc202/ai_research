@@ -1,28 +1,42 @@
-/* Single-page continuous reading: TOC and all content on one page. */
-:root{color-scheme:light dark}
-html{scroll-behavior:auto}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.8;max-width:none;margin:0;padding:2rem 4vw 5rem 24rem;color:#202b37;background:#fff}
-#TOC{position:fixed;left:0;top:0;bottom:0;overflow:auto;box-sizing:border-box;width:21rem;padding:1.5rem;border-right:1px solid #dae0e6;background:#f7f9fb;font-size:.9rem;line-height:1.5}
-#TOC ul{list-style:none;padding-left:1rem;margin:.45rem 0}
-#TOC>ul{padding-left:0}
-#TOC li{margin:.3rem 0}
-#TOC a{text-decoration:none;color:#24527b}
-#TOC a:hover{text-decoration:underline}
-body>header,body>h1,body>h2,body>h3,body>h4,body>p,body>div,body>section,body>table,body>ul,body>ol,body>blockquote,body>pre{max-width:920px}
-h1,h2,h3,h4{line-height:1.4;scroll-margin-top:1rem}
-h1{margin-top:2.5rem;padding-top:1.5rem;border-top:1px solid #e1e6ec}
-pre{overflow:auto;padding:1rem;background:#f4f6f8;border-radius:6px}
-code{overflow-wrap:anywhere}
-img{max-width:100%;height:auto}
-table{border-collapse:collapse;display:block;overflow-x:auto}
-th,td{border:1px solid #d8dee5;padding:.3rem .7rem}
-@media(max-width:850px){body{padding:1.5rem}#TOC{position:static;width:auto;max-height:45vh;border:1px solid #dae0e6;border-radius:8px;margin-bottom:2rem}}
-@media(prefers-color-scheme:dark){body{color:#ddd;background:#161b22}#TOC{background:#202731;border-color:#384351}#TOC a{color:#a6d1ff}pre{background:#252c36}th,td{border-color:#384351}h1{border-color:#384351}}
+/* AI Research Library — editorial research reading theme */
+:root{--paper:#ffffff;--ink:#273341;--muted:#657587;--accent:#32698d;--line:#e4e9ed;--wash:#f5f7f8;--serif:"Iowan Old Style","Songti SC","Noto Serif CJK SC","Source Han Serif SC",Georgia,serif;--sans:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif}
 
-/* Collapsible TOC: top-level report links remain visible. */
+html{scroll-behavior:auto}*{box-sizing:border-box}
+body{margin:0;padding:56px clamp(30px,5vw,90px) 120px calc(310px + clamp(35px,6vw,125px));font-family:var(--sans);font-size:16px;line-height:1.95;letter-spacing:.012em;color:var(--ink);background:var(--paper);-webkit-font-smoothing:antialiased}
+body>header,body>h1,body>h2,body>h3,body>h4,body>h5,body>h6,body>p,body>div:not(#TOC),body>section,body>table,body>ul,body>ol,body>blockquote,body>pre{max-width:850px}
+#TOC{position:fixed;inset:0 auto 0 0;width:310px;overflow-y:auto;padding:30px 18px 48px 20px;background:var(--wash);border-right:1px solid var(--line);font-size:13px;line-height:1.65;scrollbar-width:thin}
+#TOC:before{content:"AI RESEARCH LIBRARY";display:block;margin:0 10px 24px;color:var(--muted);font-weight:750;font-size:10px;letter-spacing:.16em}
+#TOC ul{list-style:none;padding-left:13px;margin:4px 0}
+#TOC>ul{padding-left:0}
+#TOC li{position:relative;margin:1px 0;padding-left:20px}
+#TOC a{display:block;padding:5px 7px;border-radius:6px;color:#45586a;text-decoration:none;line-height:1.55;overflow-wrap:anywhere}
+#TOC a:hover,#TOC a:focus-visible{color:var(--accent);background:#e7eef3;outline:none}
+#TOC>ul>li>a{font-size:14px;font-weight:750;color:var(--ink);margin-top:10px}
 #TOC ul[hidden]{display:none}
-#TOC li{position:relative;padding-left:1.25rem}
-#TOC .toc-toggle{position:absolute;left:0;top:0;width:1.1rem;padding:0;border:0;background:none;color:inherit;cursor:pointer;font:inherit;line-height:1.6}
-#TOC .toc-toggle:hover,#TOC .toc-toggle:focus-visible{color:#1373aa}
-#TOC .toc-controls{position:sticky;top:-1.5rem;z-index:1;display:flex;gap:.4rem;padding:.75rem 0;background:inherit;border-bottom:1px solid #dae0e6;margin-bottom:.7rem}
-#TOC .toc-controls button{border:1px solid #bcc9d5;border-radius:5px;padding:.2rem .55rem;background:transparent;color:inherit;cursor:pointer}
+#TOC .toc-toggle{position:absolute;left:0;top:4px;border:0;background:none;color:#75879a;width:19px;height:28px;cursor:pointer;font-size:14px}
+#TOC .toc-controls{position:sticky;top:-30px;z-index:2;display:flex;gap:8px;background:var(--wash);padding:10px 8px 14px;margin-bottom:12px;border-bottom:1px solid var(--line)}
+#TOC .toc-controls button{background:#fff;border:1px solid #d7e0e7;border-radius:6px;padding:5px 10px;font-size:12px;color:#486179;cursor:pointer}
+#TOC .toc-controls button:hover{background:#e7eef3}
+h1,h2,h3,h4,h5,h6{font-family:var(--sans);line-height:1.46;letter-spacing:-.018em;scroll-margin-top:24px;overflow-wrap:anywhere}
+h1{font-size:30px;font-weight:750;color:#20394a;margin:72px 0 28px;padding-bottom:15px;border-bottom:1px solid var(--line)}
+h2{font-size:24px;font-weight:720;margin:52px 0 20px;color:#263e50}
+h3{font-size:19px;font-weight:680;margin:38px 0 16px}
+h4{font-size:16px;font-weight:700;margin:30px 0 12px;color:#415569}
+p{margin:0 0 1.25em;line-height:1.95}
+a{color:var(--accent);text-underline-offset:3px}
+blockquote{margin:26px 0;padding:14px 20px;border-left:3px solid #85a9bf;background:#f5f8fa;color:#485d6c;border-radius:0 6px 6px 0}
+blockquote p:last-child{margin-bottom:0}
+hr{border:0;border-top:1px solid var(--line);margin:40px 0}
+pre{max-width:850px;overflow-x:auto;background:#f4f6f8;border:1px solid #e5eaee;border-radius:9px;padding:17px 20px;line-height:1.6;font-size:13px}
+code{font-family:"SFMono-Regular",Consolas,"Liberation Mono",monospace;font-size:.88em;overflow-wrap:anywhere}
+:not(pre)>code{background:#edf2f5;border-radius:4px;padding:.15em .33em}
+img{max-width:100%;height:auto;border-radius:5px}
+table{border-collapse:collapse;display:block;overflow-x:auto;margin:25px 0 32px;font-size:14px}
+th,td{border-bottom:1px solid #e2e9ee;padding:11px 15px;text-align:left;vertical-align:top}
+th{background:#f2f6f8;font-weight:700}
+tr:nth-child(even) td{background:#fbfcfd}
+ul,ol{padding-left:1.55em}li{margin:.3em 0}
+.math.display{overflow-x:auto;padding:6px 0}
+@media(max-width:1000px){body{padding-left:345px;padding-right:24px}}
+@media(max-width:760px){body{padding:22px 20px 70px;font-size:15px}#TOC{position:relative;width:auto;height:auto;max-height:360px;margin:0 0 34px;padding:22px;border:1px solid var(--line);border-radius:9px}#TOC .toc-controls{top:-22px}h1{font-size:26px;margin-top:44px}h2{font-size:21px}}
+@media(prefers-color-scheme:dark){:root{--paper:#171d23;--ink:#d7e0e8;--muted:#a0acb8;--accent:#a4c9e5;--line:#35414b;--wash:#202831}#TOC a{color:#bbcad5}#TOC a:hover{background:#2d3b46}#TOC>ul>li>a,h1,h2,h3{color:#e0e9f1}#TOC .toc-controls button{background:#293641;border-color:#405160;color:#c6d7e4}blockquote,pre,th,:not(pre)>code{background:#25323c;color:#d6e0e8}pre{border-color:#35414b}tr:nth-child(even) td{background:#1d252d}h4{color:#c1d1de}}

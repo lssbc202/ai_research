@@ -43,8 +43,9 @@ def collect(src: Path):
                         for p in child_pages):
                     continue
                 indent = "  " * depth
-                label = re.sub(r"^\d+[-_. ]+", "", entry.name).replace("-", " ").replace("_", " ")
-                lines.append(f"{indent}- [{label.title()}]()")
+                month = re.fullmatch(r"(\d{4})-(0[1-9]|1[0-2])", entry.name)
+                label = f"{month.group(1)}年{int(month.group(2))}月" if month else re.sub(r"^\d+[-_. ]+", "", entry.name).replace("-", " ").replace("_", " ").title()
+                lines.append(f"{indent}- [{label}]()")
                 walk(entry, depth + 1)
             elif entry.is_file() and entry.suffix.lower() == ".md":
                 rel = entry.relative_to(src).as_posix()

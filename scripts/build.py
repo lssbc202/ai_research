@@ -94,7 +94,7 @@ def run():
                 welcome = work / "src" / "index.md"
                 title = tomllib.loads(config.read_text(encoding="utf-8"))["book"]["title"]
                 welcome.write_text(
-                    f"# {title}\\n\\n本书尚未发布日报；请在月份目录上传 YYYY-MM-DD.md。\\n",
+                    f"# {title}\n\n本书尚未发布日报；请在月份目录上传 YYYY-MM-DD.md。\n",
                     encoding="utf-8")
                 summary, pages = collect(work / "src")
             (work / "src" / "SUMMARY.md").write_text(summary, encoding="utf-8")

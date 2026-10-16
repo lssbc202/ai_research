@@ -55,12 +55,46 @@ def collect(src: Path):
     walk(src, 0)
     return "\n".join(lines) + "\n", pages
 
+def indent_headings(markdown: str) -> str:
+    """Move ATX headings one level deeper, skipping fenced code blocks."""
+    result = []
+    fence = None
+    for line in markdown.splitlines(keepends=True):
+        marker = re.match(r"^ {0,3}(`{3,}|~{3,})", line)
+        if marker:
+            char, size = marker.group(1)[0], len(marker.group(1))
+            if fence is None:
+                fence = (char, size)
+            elif char == fence[0] and size >= fence[1]:
+                fence = None
+            result.append(line)
+            continue
+        if fence is None:
+            heading = re.match(r"^( {0,3})(#{1,6})([ \\t]+)(.*)$", line)
+            if heading:
+                prefix, hashes, space, rest = heading.groups()
+                if len(hashes) < 6:
+                    line = prefix + "#" + hashes + space + rest
+        result.append(line)
+    return "".join(result)
+
+
 def combine_markdown(src: Path, pages):
-    """Merge pages; rewrite relative image URLs for pandoc's resource embedder."""
+    """Create one continuous book with month > report > internal heading hierarchy."""
     parts = []
+    previous_month = None
     for i, page in enumerate(pages):
+        relative = page.relative_to(src)
+        month_folder = relative.parts[0] if len(relative.parts) > 1 else None
+        month = re.fullmatch(r"(\\d{4})-(0[1-9]|1[0-2])", month_folder or "")
+        if month_folder != previous_month:
+            previous_month = month_folder
+            if month:
+                month_label = f"{month.group(1)}年{int(month.group(2))}月"
+                parts.append(f"\\n\\n# {month_label}\\n\\n")
+            elif month_folder:
+                parts.append(f"\\n\\n# {month_folder}\\n\\n")
         raw = page.read_text(encoding="utf-8-sig")
-        # Resolve Markdown inline image paths relative to original Markdown source.
         def image_replace(match):
             prefix, target, suffix = match.groups()
             if re.match(r"^(?:https?://|data:|/|#)", target, re.I):
@@ -69,12 +103,14 @@ def combine_markdown(src: Path, pages):
             if not resolved.is_relative_to(src.resolve()) or not resolved.is_file():
                 raise ValueError(f"Missing/outside image: {page}: {target}")
             return prefix + resolved.as_posix() + suffix
-        raw = re.sub(r'(!\[[^\]]*\]\()([^\s)]+)(\))', image_replace, raw)
-        title = title_for(page)
+        raw = re.sub(r'(!\\[[^\\]]*\\]\\()([^\\s)]+)(\\))', image_replace, raw)
+        if month_folder:
+            # The report H1 becomes H2 under the monthly H1.
+            raw = indent_headings(raw)
         section_id = f"document-{i}"
-        # A stable unique marker for navigation even when H1 titles are duplicated.
-        parts.append(f'\n\n<div id="{section_id}"></div>\n\n' + raw + "\n")
-    return "\n".join(parts)
+        parts.append(f'\\n\\n<div id="{section_id}"></div>\\n\\n' + raw + "\\n")
+    return "\\n".join(parts)
+
 
 def run():
     DIST.mkdir(exist_ok=True)

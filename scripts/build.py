@@ -152,7 +152,7 @@ def run():
             # Embed the table-of-contents controls inside the offline HTML.
             document = output.read_text(encoding="utf-8")
             # Keep Pandoc's TOC separate from a paper-like main content card.
-            toc_end = re.search(r'<nav\\b[^>]*\\bid=["\\']TOC["\\'][^>]*>.*?</nav>', document, re.S)
+            toc_end = re.search(r'<nav[^>]*id="TOC"[^>]*>.*?</nav>', document, re.S)
             if toc_end:
                 end = toc_end.end()
                 document = document[:end] + '<main class="reading-paper">' + document[end:]

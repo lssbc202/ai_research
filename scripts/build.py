@@ -108,6 +108,7 @@ def run():
             subprocess.run([
                 "pandoc", str(combined), "-o", str(output),
                 "--standalone", "--embed-resources", "--toc",
+                "--css", str(ROOT / "scripts" / "continuous.css"),
                 "--toc-depth=6", "--mathml",
                 "--metadata", f"title={tomllib.loads(config.read_text(encoding='utf-8'))['book']['title']}",
             ], check=True)

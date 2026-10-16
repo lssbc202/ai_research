@@ -6,5 +6,6 @@ src = "src"
 
 [output.html]
 mathjax-support = true
+sidebar-header-nav = true
 fold.enable = true
 fold.level = 1

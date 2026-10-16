@@ -113,6 +113,13 @@ def run():
                 "--metadata", f"title={tomllib.loads(config.read_text(encoding='utf-8'))['book']['title']}",
             ], check=True)
             # Pandoc's default navigation is internal; all CSS and images are embedded.
+            # Embed the table-of-contents controls inside the offline HTML.
+            document = output.read_text(encoding="utf-8")
+            script = (ROOT / "scripts" / "continuous-toc.js").read_text(encoding="utf-8")
+            if "</body>" not in document:
+                raise ValueError("Pandoc output is missing closing body tag")
+            document = document.replace("</body>", "<script>\\n" + script + "\\n</script>\\n</body>")
+            output.write_text(document, encoding="utf-8")
             links.append((slug, tomllib.loads(config.read_text(encoding="utf-8"))["book"]["title"]))
     links_html = "\n".join(
         f'<li><a href="{html.escape(slug)}/">{html.escape(title)}</a> '

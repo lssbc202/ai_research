@@ -18,3 +18,11 @@ table{border-collapse:collapse;display:block;overflow-x:auto}
 th,td{border:1px solid #d8dee5;padding:.3rem .7rem}
 @media(max-width:850px){body{padding:1.5rem}#TOC{position:static;width:auto;max-height:45vh;border:1px solid #dae0e6;border-radius:8px;margin-bottom:2rem}}
 @media(prefers-color-scheme:dark){body{color:#ddd;background:#161b22}#TOC{background:#202731;border-color:#384351}#TOC a{color:#a6d1ff}pre{background:#252c36}th,td{border-color:#384351}h1{border-color:#384351}}
+
+/* Collapsible TOC: top-level report links remain visible. */
+#TOC ul[hidden]{display:none}
+#TOC li{position:relative;padding-left:1.25rem}
+#TOC .toc-toggle{position:absolute;left:0;top:0;width:1.1rem;padding:0;border:0;background:none;color:inherit;cursor:pointer;font:inherit;line-height:1.6}
+#TOC .toc-toggle:hover,#TOC .toc-toggle:focus-visible{color:#1373aa}
+#TOC .toc-controls{position:sticky;top:-1.5rem;z-index:1;display:flex;gap:.4rem;padding:.75rem 0;background:inherit;border-bottom:1px solid #dae0e6;margin-bottom:.7rem}
+#TOC .toc-controls button{border:1px solid #bcc9d5;border-radius:5px;padding:.2rem .55rem;background:transparent;color:inherit;cursor:pointer}

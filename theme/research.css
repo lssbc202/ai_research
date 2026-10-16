@@ -54,3 +54,6 @@ html.light .content main,html.rust .content main{
 .sidebar .research-toc-item > a:hover{color:var(--sidebar-active)}
 .sidebar .research-toc-toggle{position:absolute;left:0;top:3px;width:17px;height:23px;border:0;background:transparent;padding:0;color:var(--sidebar-fg);cursor:pointer;font-size:14px}
 .sidebar .research-toc-list[hidden]{display:none!important}
+
+.sidebar .research-current-page > .research-report-toggle{display:inline-flex;align-items:center;justify-content:center;width:18px;height:24px;padding:0;margin-right:3px;border:0;border-radius:3px;background:transparent;color:var(--sidebar-fg);font-size:14px;cursor:pointer;vertical-align:middle}
+.sidebar .research-current-page > .research-report-toggle:hover{background:rgba(55,110,73,.14)}

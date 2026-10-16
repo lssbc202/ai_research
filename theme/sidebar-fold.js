@@ -61,6 +61,23 @@
     // Append directly inside the current report chapter item, not a separate panel.
     pageLi.append(root);
     pageLi.classList.add("research-current-page");
+    // Give the active report its own folding arrow without changing its link.
+    const reportButton = document.createElement("button");
+    reportButton.type = "button";
+    reportButton.className = "research-report-toggle";
+    const setReportOpen = open => {
+      root.hidden = !open;
+      reportButton.textContent = open ? "▾" : "▸";
+      reportButton.setAttribute("aria-expanded", String(open));
+      reportButton.setAttribute("aria-label", open ? "收起本篇标题" : "展开本篇标题");
+    };
+    pageLi.insertBefore(reportButton, selected);
+    setReportOpen(true);
+    reportButton.addEventListener("click", event => {
+      event.preventDefault();
+      event.stopPropagation();
+      setReportOpen(root.hidden);
+    });
     // When native mdBook fold is collapsed, the heading navigation follows it.
     const nativeToggle = Array.from(pageLi.children).find(el => el.classList?.contains("chapter-toggle"));
     if (nativeToggle) {

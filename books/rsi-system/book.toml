@@ -1,0 +1,10 @@
+[book]
+title = "RSI-system"
+description = "RSI 系统的架构、Harness 机制与相关论文阅读笔记"
+language = "zh"
+src = "src"
+
+[output.html]
+mathjax-support = true
+fold.enable = true
+fold.level = 1

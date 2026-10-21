@@ -2,7 +2,10 @@
 
 本仓库用于公开发布 AI 领域的论文调研与分析日报，将持续积累的 Markdown 按专题整理成独立书籍，以便连续阅读、搜索、跨论文分析和分享。
 
-**当前书籍：** [Agent harness与后训练](https://lssbc202.github.io/ai_research/agent-harness-post-training/) · [整本书 HTML](https://lssbc202.github.io/ai_research/agent-harness-post-training/complete.html)
+**当前书籍：**
+
+- [Agent harness与后训练](https://lssbc202.github.io/ai_research/agent-harness-post-training/) · [整本书 HTML](https://lssbc202.github.io/ai_research/agent-harness-post-training/complete.html)
+- [RSI-system](https://lssbc202.github.io/ai_research/rsi-system/) · [整本书 HTML](https://lssbc202.github.io/ai_research/rsi-system/complete.html)
 
 ## 上传日报
 

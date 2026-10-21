@@ -7,10 +7,27 @@
     if (!sidebar || !main || document.querySelector(".research-toc-integrated")) return;
     const chapters = sidebar.querySelector("ol.chapter, .chapter");
     if (!chapters) return;
-    const selected = chapters.querySelector("a.active");
+    // mdBook's index alias can mark the first anchor active even when it is
+    // a folder's fold toggle. Only real document links can own a page TOC.
+    const pageLinks = Array.from(chapters.querySelectorAll("a[href]"))
+      .filter(link => {
+        const href = link.getAttribute("href");
+        return href && !href.startsWith("#") && !link.classList.contains("chapter-fold-toggle");
+      });
+    let selected = pageLinks.find(link => link.classList.contains("active"));
+    const isBookIndex = typeof path_to_root === "string" && path_to_root === ""
+      && /\/(?:index\.html)?$/.test(window.location.pathname);
+    if (!selected && isBookIndex) selected = pageLinks[0];
     if (!selected) return;
     const pageLi = selected.closest("li");
     if (!pageLi) return;
+    for (const link of chapters.querySelectorAll("a.active")) {
+      if (link !== selected) link.classList.remove("active");
+    }
+    selected.classList.add("active");
+    for (let ancestor = pageLi; ancestor && ancestor !== chapters; ancestor = ancestor.parentElement) {
+      if (ancestor.classList.contains("chapter-item")) ancestor.classList.add("expanded");
+    }
     const headings = Array.from(main.querySelectorAll("h2,h3,h4,h5,h6"))
       .filter(h => h.id && h.textContent.trim());
     if (!headings.length) return;
@@ -71,7 +88,8 @@
       reportButton.setAttribute("aria-expanded", String(open));
       reportButton.setAttribute("aria-label", open ? "收起本篇标题" : "展开本篇标题");
     };
-    pageLi.insertBefore(reportButton, selected);
+    // Newer mdBook versions wrap the document link in chapter-link-wrapper.
+    selected.parentElement.insertBefore(reportButton, selected);
     setReportOpen(true);
     reportButton.addEventListener("click", event => {
       event.preventDefault();

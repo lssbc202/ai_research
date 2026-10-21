@@ -8,3 +8,6 @@ src = "src"
 mathjax-support = true
 fold.enable = true
 fold.level = 1
+
+[output.html.redirect]
+"/01-harness.html" = "Harness/01-harness-handbook.html"
